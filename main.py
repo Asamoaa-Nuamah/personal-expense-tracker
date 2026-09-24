@@ -5,6 +5,7 @@ from view_expense import view_expences
 from total_expense import calc_total_expenses
 from categorizing_expense import cat_expenses
 from category_total import calc_spending_category
+from delete_expense import delete_expense
 
 #adding more than one expense (multiple expenses)
 continue_adding = "Y"
@@ -25,4 +26,5 @@ view_expences() #view expense
 calc_total_expenses() #calculates total expense
 cat_expenses() #categoring / filtering expenses
 calc_spending_category()
+delete_expense()
 
