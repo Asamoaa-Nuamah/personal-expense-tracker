@@ -12,4 +12,4 @@ def calc_spending_category():
     if found == False:
         print("No expense found in this category")
     else:
-        print(f"Total spent on {cat_expense}: GHC{total:,.2f}")
+        print(f"Total spent on {cat_expense}: GHC {total:,.2f}")

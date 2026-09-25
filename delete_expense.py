@@ -5,7 +5,7 @@ def delete_expense():
         print("No expense to delete")
     else:
         for number, expense in enumerate(expenses, start=1):
-            print(f"{number}. {expense['type']} - GHC{expense['amount']:,.2f}")
+            print(f"{number}. {expense['type']} - GHC {expense['amount']:,.2f}")
 
         while True:
             try:

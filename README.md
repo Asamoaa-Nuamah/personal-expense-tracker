@@ -1,6 +1,6 @@
 # Personal Expense Tracker
 
-A simple command line Personal Expense Tracker built with Python. The project allows users to record their expenses, view recorded expenses, and calculate their total spending.
+A simple command-line Personal Expense Tracker built with Python. The project allows users to record, view, categorize, edit, delete, and analyze their expenses.
 
 This project was built as a Python practice project to strengthen my understanding of programming fundamentals, including variables, data types, lists, dictionaries, loops, conditional statements, functions, input validation, modules, and basic project organization.
 
@@ -13,7 +13,7 @@ Users can add an expense by providing:
 * The type/category of the expense (for example, Food or Utility Bills)
 * The amount of the expense
 
-The program validates the expense amount and does not allow negative values.
+The program validates the expense amount and does not allow negative values or invalid numeric input.
 
 Each expense is stored as a dictionary containing the expense type and amount. Multiple expenses are stored in a list of dictionaries.
 
@@ -49,24 +49,102 @@ If expenses exist, each expense is displayed with its type and amount.
 Example:
 
 ```text
-Food - GH₵35.50
-Transport - GH₵20.00
-Utility Bills - GH₵50.00
+Food - GHC35.50
+Transport - GHC20.00
+Utility Bills - GHC50.00
 ```
 
 ### 4. Calculate Total Expenses
 
 The program calculates the total amount spent by looping through the stored expenses and adding each expense amount to a running total.
 
-For example:
+Example:
 
 ```text
-Food - GH₵35.50
-Transport - GH₵20.00
-Utility Bills - GH₵50.00
+Food - GHC35.50
+Transport - GHC20.00
+Utility Bills - GHC50.00
 
-Total expenses: GH₵105.50
+Total expenses: GHC105.50
 ```
+
+## Expense Tracker 2.0 Features
+
+### 5. Categorize and Filter Expenses
+
+Users can search for expenses by category.
+
+The program performs a case-insensitive comparison, meaning categories such as `Food`, `food`, and `FOOD` can be treated as the same category.
+
+If no expenses match the selected category, the program informs the user that no expenses were found.
+
+Example:
+
+```text
+Enter expense category: food
+
+Food - GHC200.00
+Food - GHC800.00
+```
+
+### 6. Calculate Spending by Category
+
+Users can calculate the total amount spent within a specific category.
+
+The program loops through the expenses, identifies matching categories, and adds their amounts to a running total.
+
+Example:
+
+```text
+Enter expense category: food
+
+Total spent on food: GHC1,000.00
+```
+
+If no expenses are found in the selected category, the program displays an appropriate message.
+
+### 7. Delete an Expense
+
+Users can select an expense by its displayed number and delete it from the expense list.
+
+The program:
+
+* Displays expenses with user-friendly numbers.
+* Validates the selected expense number.
+* Handles non-numeric input.
+* Prevents selections outside the valid range.
+* Deletes the selected expense.
+* Displays the updated expense list.
+
+Example:
+
+```text
+1. Food - GHC 200.00
+2. Transport - GHC 50.00
+3. Food - GHC 800.00
+
+Enter the expense number you want to delete: 2
+
+Expense deleted
+```
+
+### 8. Edit an Expense
+
+Users can edit an existing expense by selecting its number and choosing what they want to change.
+
+The program allows users to:
+
+1. Edit the category
+2. Edit the amount
+3. Edit both the category and amount
+
+Input validation is applied to both fields.
+
+* Categories cannot be empty.
+* Amounts must be valid numeric values.
+* Negative amounts are not allowed.
+
+After the update, the program displays a confirmation message and the updated expense list.
 
 ## Project Structure
 
@@ -79,42 +157,57 @@ personal-expense-tracker/
 ├── add_expense.py
 ├── view_expense.py
 ├── total_expense.py
+├── category_total.py
+├── delete_expense.py
+├── edit_expense.py
 └── expense_data.py
 ```
 
-### File Descriptions
+## File Descriptions
 
-**`main.py`**
+### `main.py`
 
-Controls the overall flow of the application. It imports the functions from the other modules, controls the process of adding multiple expenses, validates the user's Y/N response, and determines when the program should stop adding expenses.
+Controls the overall flow of the application. It imports the functions from the other modules and coordinates the different expense-management operations.
 
-**`add_expense.py`**
+### `add_expense.py`
 
 Contains the function responsible for adding an individual expense. It collects the expense type and amount, validates the amount, creates an expense dictionary, and adds it to the shared expense list.
 
-**`view_expense.py`**
+### `view_expense.py`
 
 Contains the functionality for displaying all recorded expenses. It checks whether the expense list is empty and, if not, loops through the list and displays each expense.
 
-**`total_expense.py`**
+### `total_expense.py`
 
 Contains the functionality for calculating the total amount spent. It loops through the expenses and adds each amount to a running total.
 
-**`expense_data.py`**
+### `category_total.py`
+
+Contains the functionality for calculating the total amount spent within a selected expense category.
+
+### `delete_expense.py`
+
+Contains the functionality for selecting and deleting an expense. It validates the user's selection and removes the corresponding expense from the list.
+
+### `edit_expense.py`
+
+Contains the functionality for editing an existing expense. Users can update the category, amount, or both, with input validation applied to the new values.
+
+### `expense_data.py`
 
 Contains the shared `expenses` list used by the different modules in the application.
 
-**`.gitignore`**
+### `.gitignore`
 
 Specifies files and folders that Git should ignore, such as Python's `__pycache__` directory.
 
-**`README.md`**
+### `README.md`
 
-Contains information about the project, its features, structure, and how to run it.
+Contains information about the project, its features, structure, concepts practiced, limitations, and future improvements.
 
 ## Concepts Practiced
 
-This project helped me practice:
+This project has helped me practice:
 
 * Variables and data types
 * Strings and floating-point numbers
@@ -125,14 +218,19 @@ This project helped me practice:
 * `while` loops
 * Functions
 * Input validation
-* Dictionary access
+* `try`/`except` and `ValueError`
+* Dictionary access and modification
 * List operations
+* `enumerate()`
 * Modules and imports
 * Sharing data between Python modules
+* Case-insensitive string comparison
 * Program flow and control
 * Debugging
 * Git and GitHub
 * Project organization
+* Writing pseudocode before implementation
+* Breaking requirements into smaller programming tasks
 
 ## Data Structure
 
@@ -171,22 +269,21 @@ Follow the prompts displayed in the terminal.
 
 The current version stores expenses only while the program is running. Once the program is closed, the stored expenses are lost because the data is not yet saved to a permanent storage system.
 
-Future versions can introduce persistent storage and additional expense-management features.
+The project currently uses an in-memory list rather than a database or file based storage system.
 
 ## Future Improvements
 
 Possible future features include:
 
-* Categorizing and filtering expenses
-* Calculating spending by category
-* Deleting expenses
-* Editing expenses
 * Saving expenses to a JSON or CSV file
-* Using a database such as SQLite
 * Adding dates to expenses
-* Adding a graphical or web-based interface
+* Using a database such as SQLite
 * Generating spending summaries and reports
+* Adding a graphical or web-based interface
+* Adding more advanced filtering and reporting features
 
 ## Project Goal
 
-The goal of this project is to progressively develop a practical expense management application while strengthening Python programming, problem solving, debugging, modular programming, and software development skills.
+The goal of this project is to progressively develop a practical expense management application while strengthening Python programming, problem solving, debugging, modular programming, input validation, and software development skills.
+
+The project is being developed incrementally, with each new feature providing an opportunity to practice a different programming concept and improve the overall structure of the application.
