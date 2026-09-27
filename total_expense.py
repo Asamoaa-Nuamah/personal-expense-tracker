@@ -5,5 +5,5 @@ def calc_total_expenses():
     else:
         total = 0
         for expense in expenses:
-            total += expense["amount"]
+            total += expense["amount"]      #calculates total expenses stored
         print("Your total expense is: GHC ", total)

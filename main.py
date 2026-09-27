@@ -9,24 +9,35 @@ from delete_expense import delete_expense
 from edit_expense import edit_expenses
 from expense_data import save_expenses
 
-#adding more than one expense (multiple expenses)
-continue_adding = "Y"
-while continue_adding == "Y" or continue_adding == "y":
-    add_expense()
-    answer = input("Do you want to add another expense? (Y/N): ") 
+while True:
+    print("===== PERSONAL EXPENSE TRACKER =====")           #displays the main menu
+    print("1. Add expense")
+    print("2. View expenses")
+    print("3. Calculate total expenses")
+    print("4. Categorize expenses")
+    print("5. Calculate spending by category")
+    print("6. Delete expense")
+    print("7. Edit expense")
+    print("8. Exit")
 
-    while answer != "Y" and answer != "y" and answer != "N" and answer != "n":   #validating the input
-        print("Make a choice please")
-        answer = input("Do you want to add another expense? (Y/N): ")
+    choice = input("Enter your choice: ")                    #allows the user to make choice from the options provided above
 
-    if answer == "N" or answer =="n":
-        continue_adding = "N"
-
-
-view_expences() #view expense
-calc_total_expenses() #calculates total expense
-cat_expenses() #categoring / filtering expenses
-calc_spending_category()
-delete_expense()
-edit_expenses()
-save_expenses()
+    if choice == '1':
+        add_expense()
+    elif choice == '2':
+        view_expences()
+    elif choice == '3':
+        calc_total_expenses()
+    elif choice == '4':
+        cat_expenses()
+    elif choice == '5':
+        calc_spending_category()
+    elif choice == '6':
+        delete_expense()
+    elif choice == '7':
+        edit_expenses()
+    elif choice == '8':
+        save_expenses()
+        break
+    else:
+        print("Invalid choice. Please choose an option from 1 to 8.")

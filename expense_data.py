@@ -2,6 +2,8 @@
 import json
 import os
 
+#storing of expense items
+
 expenses = []
 def save_expenses():
     with open('expenses.json', 'w') as file:

@@ -5,7 +5,7 @@ def calc_spending_category():
     total = 0
 
     for expense in expenses:
-        if expense['type'].lower() == cat_expense.lower():
+        if expense['type'].lower() == cat_expense.lower():      #calculating expenses based on category / expense category
             total += expense['amount']
             found = True
 

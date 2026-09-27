@@ -1,17 +1,17 @@
 from expense_data import expenses
 from view_expense import view_expences
 def edit_expenses():
-    if not expenses:
+    if not expenses: #checks to see if the list is empty
         print("No expenses to edit")
     else:
         for number, expense in enumerate(expenses, start=1):
-            print(f"{number}. {expense['type']} - GHC {expense['amount']:,.2f}")
+            print(f"{number}. {expense['type']} - GHC {expense['amount']:,.2f}")  #list items in a number form
 
         while True:
             try:
-                choice = int(input("Enter the expense you want to edit: "))  #which expense in the list
+                choice = int(input("Enter the expense you want to edit: "))  #the user chooses a number in the list
                 if choice < 1 or choice > len(expenses):
-                    print("Please enter a value within the valid range")      #validation logic
+                    print("Please enter a value within the valid range")      #validates the number chosen
                 else:
                     break
             except ValueError:
@@ -21,22 +21,22 @@ def edit_expenses():
         while True:
             try:
                 edit_choice = int(input(
-                    "What would you like to edit?\n"            #the expense to edit
+                    "What would you like to edit?\n"            #allows user to make choice on what to edit
                     "1. Category\n"
                     "2. Amount\n"
                     "3. Both\n"
                     "Enter your choice: "
                 ))
 
-                if edit_choice < 1 or edit_choice > 3:
-                    print("Please choose 1, 2, or 3.")
+                if edit_choice < 1 or edit_choice > 3:   #ensures the value is within range expected
+                    print("Please choose 1, 2, or 3.") 
                 else:
                     break
 
             except ValueError:
                 print("Please enter a valid number.")
 
-        expense_number = choice - 1
+        expense_number = choice - 1   #sets the expense number to it's index position in the expense list
         if edit_choice == 1:
             while True:
                 new_cat = input('Enter your new category: ')
@@ -44,7 +44,7 @@ def edit_expenses():
                     print('Category cannot be empty')
                 else:
                     break
-            expenses[expense_number]['type'] = new_cat
+            expenses[expense_number]['type'] = new_cat   #updates expense category
 
         elif edit_choice == 3:
             while True:
@@ -62,7 +62,7 @@ def edit_expenses():
                     if new_amount < 0:
                         print('Amount cannot be negative')
                     else:
-                        expenses[expense_number]['amount'] = new_amount
+                        expenses[expense_number]['amount'] = new_amount  #updates expense amount
                         break
                 except ValueError:
                     print("Please enter valid value")
