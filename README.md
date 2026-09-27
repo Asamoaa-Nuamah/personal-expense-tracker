@@ -1,152 +1,190 @@
 # Personal Expense Tracker
 
-A simple command-line Personal Expense Tracker built with Python. The project allows users to record, view, categorize, edit, delete, and analyze their expenses.
+A command line personal expense tracker built with Python. The project allows users to record, view, categorize, calculate, edit, and delete expenses while maintaining data between program sessions using JSON storage.
 
-This project was built as a Python practice project to strengthen my understanding of programming fundamentals, including variables, data types, lists, dictionaries, loops, conditional statements, functions, input validation, modules, and basic project organization.
+The project was developed incrementally, with each version introducing new functionality and concepts.
+
+---
 
 ## Features
 
-### 1. Add Expense
+### Version 1.0
 
-Users can add an expense by providing:
+* Add expenses
+* Add multiple expenses in one session
+* Validate expense amounts
+* Prevent negative expense amounts
+* Reject invalid non-numeric amounts
+* View recorded expenses
+* Calculate total expenses
+* Interactive Git/GitHub project setup
 
-* The type/category of the expense (for example, Food or Utility Bills)
-* The amount of the expense
+### Version 2.0
 
-The program validates the expense amount and does not allow negative values or invalid numeric input.
+* Filter expenses by category
+* Calculate spending for a specific category
+* Delete expenses
+* Edit expense categories
+* Edit expense amounts
+* Edit both category and amount
+* Improved input validation
+* Case-insensitive category matching
+* Formatted currency output
 
-Each expense is stored as a dictionary containing the expense type and amount. Multiple expenses are stored in a list of dictionaries.
+### Version 3.0
 
-Example:
+* Interactive main menu
+* Improved program flow
+* Persistent JSON storage
+* Automatically load previously saved expenses
+* Automatically save expenses when exiting
+* Multiple expense entry integrated into the main menu
+* Data remains available after restarting the program
 
-```python
-{
-    "type": "Food",
-    "amount": 35.50
-}
+---
+
+# Version 1.0
+
+The first version focused on building the core functionality of the expense tracker.
+
+### Adding Expenses
+
+Users can enter:
+
+* Expense category/type
+* Expense amount
+
+The program validates the amount and prevents negative values or non-numeric input.
+
+### Viewing Expenses
+
+Users can view all recorded expenses, including the expense category and amount.
+
+### Calculating Total Expenses
+
+The program calculates the total amount spent across all recorded expenses.
+
+### Multiple Expense Entry
+
+Users can add multiple expenses during a single run of the program.
+
+---
+
+# Version 2.0
+
+Version 2.0 expanded the application from a basic expense tracker into a more functional expense management system.
+
+### Categorizing Expenses
+
+Users can enter a category and view only expenses belonging to that category.
+
+Category matching is case-insensitive, meaning inputs such as `Food`, `food`, and `FOOD` can refer to the same category.
+
+### Category Spending
+
+Users can calculate the total amount spent within a particular category.
+
+For example:
+
+```text
+Enter expense category you want to calculate: Food
+
+Total spent on Food: GHC1,250.00
 ```
 
-### 2. Add Multiple Expenses
+### Delete Expenses
 
-After adding an expense, the program asks the user:
+Expenses are displayed with numbers, allowing users to select and delete a specific expense.
+
+The program validates the selected number before deleting the expense.
+
+### Edit Expenses
+
+Users can select an existing expense and choose to:
+
+1. Edit the category
+2. Edit the amount
+3. Edit both
+
+Input validation is applied when entering new categories and amounts.
+
+---
+
+# Version 3.0
+
+Version 3.0 focused on improving the overall application flow and introducing persistent data storage.
+
+## Interactive Main Menu
+
+Instead of automatically executing every function sequentially, the program now presents an interactive menu:
+
+```text
+===== PERSONAL EXPENSE TRACKER =====
+1. Add expense
+2. View expenses
+3. Calculate total expenses
+4. Categorize expenses
+5. Calculate spending by category
+6. Delete expense
+7. Edit expense
+8. Exit
+```
+
+The user selects an option, the corresponding function is executed, and the program returns to the main menu when the function is finished.
+
+The program continues running until the user selects **Exit**.
+
+## Multiple Expense Entry
+
+The `add_expense()` function now handles multiple expense entries internally.
+
+After adding an expense, the user is asked whether they want to add another expense.
 
 ```text
 Do you want to add another expense? (Y/N):
 ```
 
-The user can continue adding expenses or stop when they are finished.
+Choosing `Y` allows another expense to be entered, while choosing `N` returns the user to the main menu.
 
-The program also validates the user's response and asks again if an invalid option is entered.
+## Persistent JSON Storage
 
-### 3. View Expenses
+Version 3.0 introduced JSON based persistent storage.
 
-Users can view all the expenses they have entered during the current program session.
-
-The program checks whether the expense list is empty. If there are no expenses, it displays a message asking the user to add an expense first.
-
-If expenses exist, each expense is displayed with its type and amount.
-
-Example:
+Expenses are stored in:
 
 ```text
-Food - GHC35.50
-Transport - GHC20.00
-Utility Bills - GHC50.00
+expenses.json
 ```
 
-### 4. Calculate Total Expenses
+The program automatically loads previously saved expenses when it starts.
 
-The program calculates the total amount spent by looping through the stored expenses and adding each expense amount to a running total.
+When the user exits the program, the current expenses are automatically saved to the JSON file.
 
-Example:
+This means expenses are preserved between program sessions.
+
+### Data Flow
 
 ```text
-Food - GHC35.50
-Transport - GHC20.00
-Utility Bills - GHC50.00
-
-Total expenses: GHC105.50
+Program starts
+      ↓
+Load expenses from JSON
+      ↓
+User adds / edits / deletes expenses
+      ↓
+Updated expenses remain in memory
+      ↓
+User chooses Exit
+      ↓
+Save expenses to JSON
+      ↓
+Program ends
 ```
 
-## Expense Tracker 2.0 Features
+When the program is opened again, the saved expenses are loaded automatically.
 
-### 5. Categorize and Filter Expenses
+---
 
-Users can search for expenses by category.
-
-The program performs a case-insensitive comparison, meaning categories such as `Food`, `food`, and `FOOD` can be treated as the same category.
-
-If no expenses match the selected category, the program informs the user that no expenses were found.
-
-Example:
-
-```text
-Enter expense category: food
-
-Food - GHC200.00
-Food - GHC800.00
-```
-
-### 6. Calculate Spending by Category
-
-Users can calculate the total amount spent within a specific category.
-
-The program loops through the expenses, identifies matching categories, and adds their amounts to a running total.
-
-Example:
-
-```text
-Enter expense category: food
-
-Total spent on food: GHC1,000.00
-```
-
-If no expenses are found in the selected category, the program displays an appropriate message.
-
-### 7. Delete an Expense
-
-Users can select an expense by its displayed number and delete it from the expense list.
-
-The program:
-
-* Displays expenses with user-friendly numbers.
-* Validates the selected expense number.
-* Handles non-numeric input.
-* Prevents selections outside the valid range.
-* Deletes the selected expense.
-* Displays the updated expense list.
-
-Example:
-
-```text
-1. Food - GHC 200.00
-2. Transport - GHC 50.00
-3. Food - GHC 800.00
-
-Enter the expense number you want to delete: 2
-
-Expense deleted
-```
-
-### 8. Edit an Expense
-
-Users can edit an existing expense by selecting its number and choosing what they want to change.
-
-The program allows users to:
-
-1. Edit the category
-2. Edit the amount
-3. Edit both the category and amount
-
-Input validation is applied to both fields.
-
-* Categories cannot be empty.
-* Amounts must be valid numeric values.
-* Negative amounts are not allowed.
-
-After the update, the program displays a confirmation message and the updated expense list.
-
-## Project Structure
+# Project Structure
 
 ```text
 personal-expense-tracker/
@@ -157,90 +195,43 @@ personal-expense-tracker/
 ├── add_expense.py
 ├── view_expense.py
 ├── total_expense.py
+├── categorizing_expense.py
 ├── category_total.py
 ├── delete_expense.py
 ├── edit_expense.py
-└── expense_data.py
+├── expense_data.py
+└── expenses.json
 ```
 
 ## File Descriptions
 
-### `main.py`
+| File                      | Purpose                                          |
+| ------------------------- | ------------------------------------------------ |
+| `main.py`                 | Controls the main program flow and menu          |
+| `add_expense.py`          | Handles adding one or multiple expenses          |
+| `view_expense.py`         | Displays recorded expenses                       |
+| `total_expense.py`        | Calculates total expenses                        |
+| `categorizing_expense.py` | Filters expenses by category                     |
+| `category_total.py`       | Calculates spending for a selected category      |
+| `delete_expense.py`       | Deletes a selected expense                       |
+| `edit_expense.py`         | Edits an existing expense                        |
+| `expense_data.py`         | Manages the shared expense list and JSON storage |
+| `expenses.json`           | Stores expense data persistently                 |
+| `README.md`               | Project documentation                            |
 
-Controls the overall flow of the application. It imports the functions from the other modules and coordinates the different expense-management operations.
+---
 
-### `add_expense.py`
+# Data Structure
 
-Contains the function responsible for adding an individual expense. It collects the expense type and amount, validates the amount, creates an expense dictionary, and adds it to the shared expense list.
+Expenses are stored as a list of dictionaries.
 
-### `view_expense.py`
-
-Contains the functionality for displaying all recorded expenses. It checks whether the expense list is empty and, if not, loops through the list and displays each expense.
-
-### `total_expense.py`
-
-Contains the functionality for calculating the total amount spent. It loops through the expenses and adds each amount to a running total.
-
-### `category_total.py`
-
-Contains the functionality for calculating the total amount spent within a selected expense category.
-
-### `delete_expense.py`
-
-Contains the functionality for selecting and deleting an expense. It validates the user's selection and removes the corresponding expense from the list.
-
-### `edit_expense.py`
-
-Contains the functionality for editing an existing expense. Users can update the category, amount, or both, with input validation applied to the new values.
-
-### `expense_data.py`
-
-Contains the shared `expenses` list used by the different modules in the application.
-
-### `.gitignore`
-
-Specifies files and folders that Git should ignore, such as Python's `__pycache__` directory.
-
-### `README.md`
-
-Contains information about the project, its features, structure, concepts practiced, limitations, and future improvements.
-
-## Concepts Practiced
-
-This project has helped me practice:
-
-* Variables and data types
-* Strings and floating-point numbers
-* Lists
-* Dictionaries
-* `if` statements
-* `for` loops
-* `while` loops
-* Functions
-* Input validation
-* `try`/`except` and `ValueError`
-* Dictionary access and modification
-* List operations
-* `enumerate()`
-* Modules and imports
-* Sharing data between Python modules
-* Case-insensitive string comparison
-* Program flow and control
-* Debugging
-* Git and GitHub
-* Project organization
-* Writing pseudocode before implementation
-* Breaking requirements into smaller programming tasks
-
-## Data Structure
-
-The application currently stores expenses in memory using a list of dictionaries:
+Example:
 
 ```python
 expenses = [
     {
         "type": "Food",
-        "amount": 35.50
+        "amount": 50.00
     },
     {
         "type": "Transport",
@@ -249,11 +240,42 @@ expenses = [
 ]
 ```
 
-The list allows multiple expenses to be stored, while each dictionary represents one individual expense.
+This structure makes it possible to store multiple expenses while keeping the category and amount associated with each expense.
 
-## How to Run
+---
 
-Make sure Python is installed on your computer.
+# Concepts Practiced
+
+Throughout the development of this project, the following Python concepts were practiced:
+
+* Variables
+* Lists
+* Dictionaries
+* Functions
+* Function imports
+* Modules
+* `if` / `elif` / `else`
+* `while` loops
+* Nested loops
+* `for` loops
+* `break`
+* User input
+* Input validation
+* `try` / `except`
+* `ValueError`
+* String methods
+* Formatted strings (f-strings)
+* Dictionary access and modification
+* List operations
+* JSON serialization and deserialization
+* File handling
+* Persistent data storage
+* Modular program design
+* Git and GitHub
+
+---
+
+# How to Run
 
 Clone the repository and navigate into the project directory.
 
@@ -263,27 +285,47 @@ Then run:
 python main.py
 ```
 
-Follow the prompts displayed in the terminal.
+The application will display the main menu and allow the user to select the desired operation.
 
-## Current Limitations
+---
 
-The current version stores expenses only while the program is running. Once the program is closed, the stored expenses are lost because the data is not yet saved to a permanent storage system.
+# Current Limitations
 
-The project currently uses an in-memory list rather than a database or file based storage system.
+The current version is a command line application and stores data locally in a JSON file.
 
-## Future Improvements
+It does not currently include:
 
-Possible future features include:
+* A graphical user interface
+* A web interface
+* User accounts or authentication
+* A database
+* Advanced reporting or data visualization
+* Budget management
+* Date-based expense tracking
 
-* Saving expenses to a JSON or CSV file
-* Adding dates to expenses
-* Using a database such as SQLite
-* Generating spending summaries and reports
-* Adding a graphical or web-based interface
-* Adding more advanced filtering and reporting features
+---
 
-## Project Goal
+# Future Improvements
 
-The goal of this project is to progressively develop a practical expense management application while strengthening Python programming, problem solving, debugging, modular programming, input validation, and software development skills.
+Possible future improvements include:
 
-The project is being developed incrementally, with each new feature providing an opportunity to practice a different programming concept and improve the overall structure of the application.
+* Add expense dates
+* Add monthly and weekly spending summaries
+* Add budget tracking
+* Add income tracking
+* Add spending reports
+* Add data visualization
+* Move from JSON storage to a database
+* Build a graphical or web interface
+* Add search functionality
+* Improve error handling and user experience
+
+---
+
+# Project Goal
+
+The goal of this project is to build a practical Python application while progressively developing software engineering skills.
+
+The project began as a simple command line expense tracker and has evolved into a modular application with input validation, expense management features, an interactive menu, and persistent data storage.
+
+Future versions will continue to expand the application's functionality while applying more advanced software development concepts.
