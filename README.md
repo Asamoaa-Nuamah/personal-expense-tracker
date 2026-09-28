@@ -309,7 +309,7 @@ It does not currently include:
 
 Possible future improvements include:
 
-* Add expense dates
+* Add expense dates (Done)
 * Add monthly and weekly spending summaries
 * Add budget tracking
 * Add income tracking
