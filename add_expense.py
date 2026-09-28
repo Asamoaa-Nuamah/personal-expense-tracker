@@ -1,4 +1,6 @@
 from expense_data import expenses
+from datetime import date  #adds date description to expense added
+
 def add_expense():
     while True:
         #asking user to add an expense
@@ -19,7 +21,8 @@ def add_expense():
         #storing the expense added
         expense_storage = {
             "type" : expense_type,
-            "amount" : amount
+            "amount" : amount,
+            "date" : str(date.today())
         }
         expenses.append(expense_storage) #storing the dictionary in a list
 
