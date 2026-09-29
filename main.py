@@ -7,7 +7,6 @@ from categorizing_expense import cat_expenses
 from category_total import calc_spending_category
 from delete_expense import delete_expense
 from edit_expense import edit_expenses
-from expense_data import save_expenses
 
 while True:
     print("===== PERSONAL EXPENSE TRACKER =====")           #displays the main menu
@@ -37,7 +36,6 @@ while True:
     elif choice == '7':
         edit_expenses()
     elif choice == '8':
-        save_expenses()
         break
     else:
         print("Invalid choice. Please choose an option from 1 to 8.")

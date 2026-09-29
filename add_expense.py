@@ -1,4 +1,4 @@
-from expense_data import expenses
+from database import add_expense_to_database
 from datetime import date  #adds date description to expense added
 
 def add_expense():
@@ -17,15 +17,8 @@ def add_expense():
                     break
             except ValueError:
                 print('Enter a valid input!')
-
-        #storing the expense added
-        expense_storage = {
-            "type" : expense_type,
-            "amount" : amount,
-            "date" : str(date.today())
-        }
-        expenses.append(expense_storage) #storing the dictionary in a list
-
+        #stores expense to database        
+        add_expense_to_database(expense_type, amount, str(date.today()))
         print("Expense created successfully")
 
         #asking the user to add another expense

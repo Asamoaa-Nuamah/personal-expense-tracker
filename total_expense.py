@@ -1,9 +1,10 @@
-from expense_data import expenses
+from database import get_expenses
 def calc_total_expenses():
+    expenses = get_expenses()
     if not expenses:
-        print("Cannot add non existing values")
+        print("No expenses found")
     else:
         total = 0
         for expense in expenses:
-            total += expense["amount"]      #calculates total expenses stored
+            total += expense[2]      #calculates total expenses stored
         print("Your total expense is: GHC ", total)

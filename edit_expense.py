@@ -1,21 +1,32 @@
-from expense_data import expenses
+from database import update_expense, get_expenses
 from view_expense import view_expences
+
 def edit_expenses():
-    if not expenses: #checks to see if the list is empty
+    expenses = get_expenses()
+
+    if not expenses: #checks to see if the table is empty
         print("No expenses to edit")
     else:
-        for number, expense in enumerate(expenses, start=1):
-            print(f"{number}. {expense['type']} - GHC {expense['amount']:,.2f}")  #list items in a number form
-
+        for expense in expenses:
+            print(f"{expense[0]}. {expense[1]} - GHC {expense[2]:,.2f}")  #list items with their ids
         while True:
             try:
-                choice = int(input("Enter the expense you want to edit: "))  #the user chooses a number in the list
-                if choice < 1 or choice > len(expenses):
-                    print("Please enter a value within the valid range")      #validates the number chosen
-                else:
+                choice = int(input("Enter the expense ID you want to edit: "))
+
+                found = False
+
+                for expense in expenses:
+                    if expense[0] == choice:
+                        found = True
+                        break
+
+                if found:
                     break
+                else:
+                    print("Please enter a valid expense ID.")
+
             except ValueError:
-                print('Please enter a valid number')
+                print("Please enter a valid number.")
 
 
         while True:
@@ -36,36 +47,60 @@ def edit_expenses():
             except ValueError:
                 print("Please enter a valid number.")
 
-        expense_number = choice - 1   #sets the expense number to it's index position in the expense list
-        if edit_choice == 1:
-            while True:
-                new_cat = input('Enter your new category: ')
-                if new_cat.strip() == "":
-                    print('Category cannot be empty')
-                else:
-                    break
-            expenses[expense_number]['type'] = new_cat   #updates expense category
+        # Find the selected expense using its database ID
+        for expense in expenses:
+            if expense[0] == choice:
+                old_type = expense[1]
+                old_amount = expense[2]
 
-        elif edit_choice == 3:
-            while True:
-                new_cat = input('Enter your new category: ')
-                if new_cat.strip() == "":
-                    print('Category cannot be empty')
-                else:
-                    break
-            expenses[expense_number]['type'] = new_cat
+                if edit_choice == 1:
+                    while True:
+                        new_cat = input("Enter your new category: ")
 
-        if edit_choice == 2 or edit_choice == 3:
-            while True:
-                try:
-                    new_amount = float(input('Enter your new amount: '))
-                    if new_amount < 0:
-                        print('Amount cannot be negative')
-                    else:
-                        expenses[expense_number]['amount'] = new_amount  #updates expense amount
-                        break
-                except ValueError:
-                    print("Please enter valid value")
+                        if new_cat.strip() == "":
+                            print("Category cannot be empty")
+                        else:
+                            break
 
-    print('Expense updated')
-    view_expences()
+                    update_expense(new_cat, old_amount, choice)
+
+                elif edit_choice == 2:
+                    while True:
+                        try:
+                            new_amount = float(input("Enter your new amount: "))
+
+                            if new_amount < 0:
+                                print("Amount cannot be negative")
+                            else:
+                                break
+
+                        except ValueError:
+                            print("Please enter a valid value")
+
+                    update_expense(old_type, new_amount, choice)
+
+                elif edit_choice == 3:
+                    while True:
+                        new_cat = input("Enter your new category: ")
+
+                        if new_cat.strip() == "":
+                            print("Category cannot be empty")
+                        else:
+                            break
+
+                    while True:
+                        try:
+                            new_amount = float(input("Enter your new amount: "))
+
+                            if new_amount < 0:
+                                print("Amount cannot be negative")
+                            else:
+                                break
+
+                        except ValueError:
+                            print("Please enter a valid value")
+
+                    update_expense(new_cat, new_amount, choice)
+
+                break
+
