@@ -11,20 +11,27 @@ def delete_expense():
         while True:
             try:
                 user_choice = int(input("Enter the expense ID you want to delete: "))
-
-                found = False
-
+                ids = [] #store the ids of expense items 
                 for expense in expenses:
-                    if expense[0] == user_choice:
-                        found = True
+                    ids.append(expense[0])
+                if user_choice not in ids:
+                    print("Please enter a valid expense ID.")  #prompt user to enter a valid expense id
+                else:
+                    final_decision = input("Are you sure you want to delete this expense? y/n: ") #confirms if user would like to delete an item 
+                    if final_decision == "Y" or final_decision == "y":
+                        delete_expense_from_database(user_choice)
+                        print('Expense deleted')
                         break
 
-                if found:
-                    break
-                else:
-                    print("Please enter a valid expense ID.")
+                    elif final_decision == "N" or final_decision == "n":  #cancels deletion
+                        print("Delete has been cancelled")
+                        break
+                
+                    else:
+                        print("Please enter a valid response!")  #ensures user enters a valid response
+                    
+                    
 
             except ValueError:
-                print("Please enter a valid number.")
-        delete_expense_from_database(user_choice)
-        print('Expense deleted')
+                print("Please enter a valid number.") #ensures user enters a valid expense id
+        
