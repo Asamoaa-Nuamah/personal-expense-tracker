@@ -1,37 +1,42 @@
 from database import get_expenses, delete_expense as delete_expense_from_database
-from view_expense import view_expences
+from add_expense import ask_yes_no
+
+
 def delete_expense():
-    expenses = get_expenses() 
-    if not expenses: #checks to see if there's an item to delete
+    expenses = get_expenses()
+
+    if not expenses:
         print("No expense to delete")
-    else:
-        for expense in expenses:
-            print(f"{expense[0]}. {expense[1]} - GHC {expense[2]:,.2f}") #displays the expense items with their ids
+        return
 
-        while True:
-            try:
-                user_choice = int(input("Enter the expense ID you want to delete: "))
-                ids = [] #store the ids of expense items 
-                for expense in expenses:
-                    ids.append(expense[0])
-                if user_choice not in ids:
-                    print("Please enter a valid expense ID.")  #prompt user to enter a valid expense id
-                else:
-                    final_decision = input("Are you sure you want to delete this expense? y/n: ") #confirms if user would like to delete an item 
-                    if final_decision == "Y" or final_decision == "y":
-                        delete_expense_from_database(user_choice)
-                        print('Expense deleted')
-                        break
+    # List every expense with its ID so the user knows what to pick
+    for expense_id, name, category, amount, description, date in expenses:
+        print(f"{expense_id}. {name} ({category}) - GHC {amount:,.2f}  [{date}]")
 
-                    elif final_decision == "N" or final_decision == "n":  #cancels deletion
-                        print("Delete has been cancelled")
-                        break
-                
-                    else:
-                        print("Please enter a valid response!")  #ensures user enters a valid response
-                    
-                    
+    # Build the list of valid IDs once, outside the loop
+    ids = [expense[0] for expense in expenses]
 
-            except ValueError:
-                print("Please enter a valid number.") #ensures user enters a valid expense id
-        
+    while True:
+        user_choice = input("Enter the expense ID you want to delete (0 to cancel): ").strip()
+
+        if not user_choice.isdigit():
+            print("Please enter a valid number.")
+            continue
+
+        user_choice = int(user_choice)
+
+        if user_choice == 0:
+            print("Delete has been cancelled")
+            return
+
+        if user_choice not in ids:
+            print("Please enter a valid expense ID.")
+            continue
+
+        # ask_yes_no keeps asking until the answer is y or n
+        if ask_yes_no("Are you sure you want to delete this expense? (Y/N): "):
+            delete_expense_from_database(user_choice)
+            print("Expense deleted")
+        else:
+            print("Delete has been cancelled")
+        return

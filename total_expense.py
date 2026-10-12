@@ -1,10 +1,10 @@
-from database import get_expenses
+from database import get_total_expenses
+
+
 def calc_total_expenses():
-    expenses = get_expenses()
-    if not expenses:
-        print("No expenses found")
+    total = get_total_expenses()  # returns 0 when there are no expenses
+
+    if total == 0:
+        print("No expenses found. Add an expense first.")
     else:
-        total = 0
-        for expense in expenses:
-            total += expense[2]      #calculates total expenses stored
-        print("Your total expense is: GHC ", total)
+        print(f"Your total expense is: GHC {total:,.2f}")
