@@ -51,10 +51,21 @@ def get_expenses_by_category(category_id):
     """
     return connection.execute(query, (category_id,)).fetchall()
 
+def get_expenses_by_date_range(start_date, end_date):
+    query = """
+        SELECT e.id, e.name, c.name, e.amount, e.description, e.date
+        FROM expenses e
+        JOIN categories c ON c.id = e.category_id
+        WHERE e.date BETWEEN ? AND ?
+        ORDER BY e.date DESC
+    """
+    return connection.execute(query, (start_date, end_date)).fetchall()
+
 
 def get_total_expenses():
     result = connection.execute("SELECT SUM(amount) FROM expenses").fetchone()
     return result[0] or 0
+
 
 def get_expenses():
     query = """
