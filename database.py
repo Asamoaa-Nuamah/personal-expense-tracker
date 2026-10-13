@@ -51,6 +51,7 @@ def get_expenses_by_category(category_id):
     """
     return connection.execute(query, (category_id,)).fetchall()
 
+
 def get_expenses_by_date_range(start_date, end_date):
     query = """
         SELECT e.id, e.name, c.name, e.amount, e.description, e.date
@@ -92,6 +93,22 @@ def update_expense(expense_id, category_id, name,  amount, description):
         (category_id, name, amount, description, expense_id),
     )
     connection.commit()
+
+
+def get_summary_by_category(start_date=None, end_date=None):
+    """Return (category_name, total, number_of_expenses) for each category.
+    With no dates it covers all time; with dates it covers that range only."""
+    query = """
+        SELECT c.name, SUM(e.amount), COUNT(e.id)
+        FROM expenses e
+        JOIN categories c ON c.id = e.category_id
+        WHERE (? IS NULL OR e.date >= ?)
+          AND (? IS NULL OR e.date <= ?)
+        GROUP BY c.id
+        ORDER BY SUM(e.amount) DESC
+    """
+    params = (start_date, start_date, end_date, end_date)
+    return connection.execute(query, params).fetchall()
 
 
 def delete_expense(expense_id):

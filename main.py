@@ -5,6 +5,7 @@ from view_expense import view_expenses
 from total_expense import calc_total_expenses
 from delete_expense import delete_expense
 from edit_expense import edit_expenses
+from summary_expense import show_summary
 
 
 def show_menu():
@@ -12,9 +13,10 @@ def show_menu():
     print("1. Add expense")
     print("2. View expenses")
     print("3. Calculate total expenses")
-    print("4. Delete expense")
-    print("5. Edit expense")
-    print("6. Exit")
+    print("4. Spending summary")
+    print("5. Delete expense")
+    print("6. Edit expense")
+    print("7. Exit")
 
 
 def main():
@@ -31,14 +33,16 @@ def main():
         elif choice == "3":
             calc_total_expenses()
         elif choice == "4":
-            delete_expense()
+            show_summary()
         elif choice == "5":
-            edit_expenses()
+            delete_expense()
         elif choice == "6":
+            edit_expenses()
+        elif choice == "7":
             print("Goodbye!")
             break
         else:
-            print("Invalid choice. Please choose an option from 1 to 6.")
+            print("Invalid choice. Please choose an option from 1 to 7.")
 
 
 # Runs the program only when this file is executed directly (python main.py),
