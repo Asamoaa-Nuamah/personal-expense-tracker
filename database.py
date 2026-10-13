@@ -1,4 +1,7 @@
 import sqlite3
+import os
+import glob
+from datetime import datetime
 
 connection = sqlite3.connect('expenses.db')
 connection.execute("PRAGMA foreign_keys = ON")  # makes SQLite enforce the category link
@@ -14,8 +17,8 @@ connection.execute("""
     CREATE TABLE IF NOT EXISTS expenses(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         category_id INTEGER NOT NULL,
-        name TEXT NOT NULL,
-        amount REAL NOT NULL,
+        name TEXT NOT NULL CHECK (length(trim(name)) > 0),
+        amount REAL NOT NULL CHECK (amount >= 0),
         description TEXT,
         date TEXT NOT NULL,
         FOREIGN KEY (category_id) REFERENCES categories(id)
@@ -25,9 +28,10 @@ connection.commit()
 
 
 def insert_category(name):
-    cursor = connection.execute("INSERT INTO categories(name) VALUES (?)", (name,))
-    connection.commit()
-    return cursor.lastrowid
+    with connection:
+        cursor = connection.execute("INSERT INTO categories(name) VALUES (?)", (name,))
+        connection.commit()
+        return cursor.lastrowid
 
 
 def get_all_categories():
@@ -35,11 +39,12 @@ def get_all_categories():
 
 
 def add_expense_to_database(category_id, name, amount, description, date):
-    connection.execute(
-        "INSERT INTO expenses(category_id,name, amount, description, date) VALUES (?, ?, ?, ?,?)",
-        (category_id,name, amount, description, date),
-    )
-    connection.commit()
+    with connection: #commits on success, rolls back if an error occurs
+        connection.execute(
+            "INSERT INTO expenses(category_id,name, amount, description, date) VALUES (?, ?, ?, ?,?)",
+            (category_id,name, amount, description, date),
+        )
+
 
 
 def get_expenses_by_category(category_id):
@@ -88,11 +93,11 @@ def get_expense_by_id(expense_id):
 
 
 def update_expense(expense_id, category_id, name,  amount, description):
-    connection.execute(
-        "UPDATE expenses SET category_id = ?,name = ?, amount = ?, description = ? WHERE id = ?",
-        (category_id, name, amount, description, expense_id),
-    )
-    connection.commit()
+    with connection:
+        connection.execute(
+            "UPDATE expenses SET category_id = ?,name = ?, amount = ?, description = ? WHERE id = ?",
+            (category_id, name, amount, description, expense_id),
+        )
 
 
 def get_summary_by_category(start_date=None, end_date=None):
@@ -112,5 +117,30 @@ def get_summary_by_category(start_date=None, end_date=None):
 
 
 def delete_expense(expense_id):
-    connection.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
-    connection.commit()
+    with connection:
+        connection.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
+
+
+
+def backup_database(keep=30):
+    """Save a timestamped copy of the database in the backups folder.
+    Keeps only the newest `keep` backups. Returns the path of the new backup."""
+    os.makedirs("backups", exist_ok=True)
+
+    stamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    path = f"backups/expenses_{stamp}.db"
+
+    destination = sqlite3.connect(path)
+    try:
+        with destination:
+            connection.backup(destination)  # safe even while the database is open
+    finally:
+        destination.close()
+
+    # The timestamp format sorts oldest to newest, so everything
+    # except the last `keep` files is the oldest and can be removed.
+    old_backups = sorted(glob.glob("backups/expenses_*.db"))[:-keep]
+    for old in old_backups:
+        os.remove(old)
+
+    return path

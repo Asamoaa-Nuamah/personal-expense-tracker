@@ -6,6 +6,7 @@ from total_expense import calc_total_expenses
 from delete_expense import delete_expense
 from edit_expense import edit_expenses
 from summary_expense import show_summary
+from database import backup_database
 
 
 def show_menu():
@@ -16,7 +17,8 @@ def show_menu():
     print("4. Spending summary")
     print("5. Delete expense")
     print("6. Edit expense")
-    print("7. Exit")
+    print("7. Backup database")
+    print("8. Exit")
 
 
 def main():
@@ -39,11 +41,14 @@ def main():
         elif choice == "6":
             edit_expenses()
         elif choice == "7":
-            print("Goodbye!")
+            path = backup_database()
+            print(f"Backup saved: {path}")
+        elif choice == "8":
+            backup_database()  # automatic backup on exit
+            print("Backup saved. Goodbye!")
             break
         else:
-            print("Invalid choice. Please choose an option from 1 to 7.")
-
+            print("Invalid choice. Please choose an option from 1 to 8.")
 
 # Runs the program only when this file is executed directly (python main.py),
 # not when another file imports it.
