@@ -1,116 +1,161 @@
 # Personal Expense Tracker
 
-A simple Python command-line app for tracking personal expenses, organizing them by category, and reviewing spending over time.
+A Python command-line application for tracking personal spending, organizing expenses by category, and reviewing totals over time.
 
-The project stores data in a local SQLite database, supports editing and deleting entries, and creates automatic backups so your records remain available between sessions.
+This project uses SQLite to persist data locally and provides a simple menu-driven interface for adding, viewing, summarizing, editing, and deleting expense records.
 
-## Features
+## Overview
+
+The expense tracker allows users to:
 
 - Add expenses with a category, name, amount, and optional description
-- View expenses by category, week, month, year, or specific date
-- Calculate total spending across all recorded expenses
-- See category-based spending summaries with percentages
-- Edit existing expenses and update category or amount
-- Delete expenses safely by selecting their record ID
-- Create and reuse categories for consistent tracking
-- Keep persistent data in SQLite instead of temporary in-memory storage
-- Back up the database automatically to the backups folder
+- View expenses by category or date
+- Review overall spending totals
+- View spending summaries by category
+- Edit existing entries
+- Delete records when needed
+- Keep data saved between sessions in a local SQLite database
 
-## Project structure
+## Current Features
+
+- Add new expenses with validation
+- Create and reuse categories
+- View expenses by category
+- View expenses for today or a specific date
+- View summaries by category and total spend
+- Edit an existing expense
+- Delete an existing expense
+- Persistent SQLite storage using `expenses.db`
+
+## Project Structure
 
 ```text
 Expense_Tracker/
 ├── main.py
 ├── add_expense.py
 ├── view_expense.py
-├── total_expense.py
 ├── summary_expense.py
 ├── delete_expense.py
 ├── edit_expense.py
 ├── database.py
 ├── expenses.db
-├── backups/
 ├── README.md
 └── .gitignore
 ```
 
-## How it works
+## Application Flow
 
-The app uses a menu-driven interface in `main.py` to route the user to the relevant action. Expenses are stored in `expenses.db`, and category and budget logic are handled in `database.py`.
+The app is structured around a small menu system in `main.py`:
 
-## Run the app
+- `main.py` controls the main menu and program flow
+- `add_expense.py` handles category selection and adding expense records
+- `view_expense.py` displays stored expenses using category/date filters
+- `summary_expense.py` calculates overall and per-category spending summaries
+- `delete_expense.py` removes selected records
+- `edit_expense.py` updates selected records
+- `database.py` handles the SQLite database schema and queries
 
-Make sure Python 3 is installed, then start the program:
+## Requirements
+
+- Python 3.8+
+- SQLite support (included with Python)
+
+## Run the App
+
+From the project folder, run:
 
 ```bash
 python3 main.py
 ```
 
-If you prefer a virtual environment:
+## Main Menu
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python main.py
-```
-
-## Main menu
+The current menu in the project is:
 
 ```text
 ===== PERSONAL EXPENSE TRACKER =====
 1. Add expense
 2. View expenses
-3. Calculate total expenses
-4. Spending summary
-5. Delete expense
-6. Edit expense
-7. Backup database
-8. Exit
+3. Spending summary
+4. Delete expense
+5. Edit expense
+6. Exit
 ```
 
-### Menu options
+### Menu Options
 
 1. Add expense
-   - Choose or create a category
+   - Select an existing category or create a new one
    - Enter the expense name and amount
-   - Optionally add a short description
+   - Optionally include a description
 
 2. View expenses
-   - View all entries or filter by category, week, month, year, or date
+   - View expenses by category
+   - View today’s expenses
+   - View expenses for a specific date
 
-3. Calculate total expenses
-   - Shows the total amount spent across all records
+3. Spending summary
+   - Shows totals for categories and overall spend
 
-4. Spending summary
-   - Summarizes spending by category for all time or a selected time range
+4. Delete expense
+   - Choose an expense ID to remove from the database
 
-5. Delete expense
-   - Select the expense ID to remove a record
+5. Edit expense
+   - Update a selected expense’s details
 
-6. Edit expense
-   - Update the category, name, amount, or description of an existing entry
+6. Exit
+   - Close the application
 
-7. Backup database
-   - Creates a timestamped copy in the backups directory
+## Data Storage
 
-8. Exit
-   - Saves a final backup automatically before closing
+The application stores all data in a local SQLite database file named `expenses.db`.
 
-## Data storage
+The database currently contains:
 
-- Database file: `expenses.db`
-- Backup folder: `backups/`
-- Backup format: `expenses_YYYY-MM-DD_HH-MM-SS.db`
+- `categories` table
+- `expenses` table
 
-## Example workflow
+Each expense record includes:
 
-1. Start the app with `python3 main.py`
-2. Choose option 1 to add an expense
-3. Select a category or create a new one
+- ID
+- category ID
+- name
+- amount
+- description
+- date
+
+## Data Validation
+
+The app includes basic validation to improve reliability:
+
+- Rejects negative amounts
+- Rejects invalid numeric input
+- Prevents empty expense names
+- Validates category selection
+- Confirms deletion before removing records
+
+## Example Workflow
+
+1. Run `python3 main.py`
+2. Select option 1 to add an expense
+3. Choose a category or create a new one
 4. Enter the expense name and amount
-5. Review totals and summaries in the menu
-6. Use backups if you want a safe restore point
+5. Use option 2 to view records or option 3 for summary totals
+6. Use option 4 or 5 to remove or update records as needed
+
+## Important Note
+
+The backup feature referenced in older versions of this project is not currently implemented in the codebase. There is no `backups/` directory, no `backup_database()` function, and no backup option in the active menu. The current project version focuses on SQLite-based expense tracking without automatic backup generation.
+
+## Use Cases
+
+This app is suitable for:
+
+- Daily personal budgeting
+- Tracking recurring expenses
+- Monitoring spending by category
+- Simple local financial record keeping
 
 ## Notes
 
-This project is intended for personal budgeting and lightweight expense tracking. It is designed as a local command-line utility and does not include a web interface or cloud syncing.
+This is a lightweight local CLI budgeting tool intended for personal use. It does not include a web dashboard, authentication, cloud sync, or backup system in its current version.
