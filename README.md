@@ -143,10 +143,6 @@ The app includes basic validation to improve reliability:
 5. Use option 2 to view records or option 3 for summary totals
 6. Use option 4 or 5 to remove or update records as needed
 
-## Important Note
-
-The backup feature referenced in older versions of this project is not currently implemented in the codebase. There is no `backups/` directory, no `backup_database()` function, and no backup option in the active menu. The current project version focuses on SQLite-based expense tracking without automatic backup generation.
-
 ## Use Cases
 
 This app is suitable for:
