@@ -1,5 +1,6 @@
 from database import get_expenses, get_expense_by_id, update_expense
 from add_expense import choose_category, get_expense_name, get_amount
+from view_expense import run_menu
 
 
 def choose_expense_id(expenses):
@@ -20,7 +21,7 @@ def choose_expense_id(expenses):
         print("Please enter a valid expense ID.")
 
 
-def edit_expenses():
+def edit_one_expense():
     expenses = get_expenses()
 
     if not expenses:
@@ -69,3 +70,10 @@ def edit_expenses():
 
     update_expense(expense_id, category_id, name, amount, description)
     print("Expense updated successfully")
+
+
+def edit_expenses():
+    """Edit menu. It stays open after each edit until the user chooses Back."""
+    run_menu("Edit expense", [
+        ("Edit an expense", edit_one_expense),
+    ])

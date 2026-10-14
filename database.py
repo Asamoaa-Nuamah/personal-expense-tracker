@@ -1,7 +1,4 @@
 import sqlite3
-import os
-import glob
-from datetime import datetime
 
 connection = sqlite3.connect('expenses.db')
 connection.execute("PRAGMA foreign_keys = ON")  # makes SQLite enforce the category link
@@ -100,20 +97,17 @@ def update_expense(expense_id, category_id, name,  amount, description):
         )
 
 
-def get_summary_by_category(start_date=None, end_date=None):
-    """Return (category_name, total, number_of_expenses) for each category.
-    With no dates it covers all time; with dates it covers that range only."""
+def get_category_summary():
+    """Return (category_name, total, latest_expense_date) for each category,
+    biggest total first."""
     query = """
-        SELECT c.name, SUM(e.amount), COUNT(e.id)
+        SELECT c.name, SUM(e.amount), MAX(e.date)
         FROM expenses e
         JOIN categories c ON c.id = e.category_id
-        WHERE (? IS NULL OR e.date >= ?)
-          AND (? IS NULL OR e.date <= ?)
         GROUP BY c.id
         ORDER BY SUM(e.amount) DESC
     """
-    params = (start_date, start_date, end_date, end_date)
-    return connection.execute(query, params).fetchall()
+    return connection.execute(query).fetchall()
 
 
 def delete_expense(expense_id):
@@ -122,25 +116,3 @@ def delete_expense(expense_id):
 
 
 
-def backup_database(keep=30):
-    """Save a timestamped copy of the database in the backups folder.
-    Keeps only the newest `keep` backups. Returns the path of the new backup."""
-    os.makedirs("backups", exist_ok=True)
-
-    stamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    path = f"backups/expenses_{stamp}.db"
-
-    destination = sqlite3.connect(path)
-    try:
-        with destination:
-            connection.backup(destination)  # safe even while the database is open
-    finally:
-        destination.close()
-
-    # The timestamp format sorts oldest to newest, so everything
-    # except the last `keep` files is the oldest and can be removed.
-    old_backups = sorted(glob.glob("backups/expenses_*.db"))[:-keep]
-    for old in old_backups:
-        os.remove(old)
-
-    return path

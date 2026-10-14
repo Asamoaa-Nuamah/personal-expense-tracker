@@ -1,8 +1,9 @@
 from database import get_expenses, delete_expense as delete_expense_from_database
 from add_expense import ask_yes_no
+from view_expense import run_menu
 
 
-def delete_expense():
+def delete_one_expense():
     expenses = get_expenses()
 
     if not expenses:
@@ -40,3 +41,10 @@ def delete_expense():
         else:
             print("Delete has been cancelled")
         return
+
+
+def delete_expense():
+    """Delete menu. It stays open after each deletion until the user chooses Back."""
+    run_menu("Delete expense", [
+        ("Delete an expense", delete_one_expense),
+    ])
