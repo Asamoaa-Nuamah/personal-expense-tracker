@@ -42,7 +42,7 @@ Expense_Tracker/
 └── .gitignore
 ```
 
-`expenses.db` is not included in the repository. The app creates this local database file when it runs.
+`expenses.db` is ignored by Git and is not tracked or included in the GitHub repository. The app creates it locally when run.
 
 ## Application Flow
 
@@ -109,7 +109,7 @@ The current menu in the project is:
 
 ## Data Storage
 
-The application stores all data in a local SQLite database file named `expenses.db`. This file is created locally when the app runs and is not part of the GitHub repository, so each user has their own database and expense records.
+The application stores data in the local SQLite database file `expenses.db`. It is created when the app runs; each user has a separate local database, and its records are not synced to GitHub.
 
 The database currently contains:
 
