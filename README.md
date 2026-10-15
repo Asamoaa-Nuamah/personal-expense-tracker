@@ -38,10 +38,11 @@ Expense_Tracker/
 ├── delete_expense.py
 ├── edit_expense.py
 ├── database.py
-├── expenses.db
 ├── README.md
 └── .gitignore
 ```
+
+`expenses.db` is not included in the repository. The app creates this local database file when it runs.
 
 ## Application Flow
 
@@ -108,7 +109,7 @@ The current menu in the project is:
 
 ## Data Storage
 
-The application stores all data in a local SQLite database file named `expenses.db`.
+The application stores all data in a local SQLite database file named `expenses.db`. This file is created locally when the app runs and is not part of the GitHub repository, so each user has their own database and expense records.
 
 The database currently contains:
 
